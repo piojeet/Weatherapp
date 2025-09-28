@@ -1,0 +1,32 @@
+/* पिछले CSS से लिया गया, केवल input-group को अपडेट करें */
+.input-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+input[type="text"], button {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:nth-child(2) {
+  background-color: #28a745; /* अलग रंग लोकेशन बटन के लिए */
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* बाकी CSS (बैकग्राउंड, SVG एनिमेशन्स) वही रहेगा */
