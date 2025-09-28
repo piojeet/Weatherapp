@@ -12,19 +12,22 @@ async function fetchWeather() {
   }
 
   try {
-    const apiKey = 'YOUR_API_KEY'; // OpenWeatherMap API key
+    const apiKey = 'YOUR_API_KEY'; // अपनी API key डालें
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    console.log('Fetching weather for city:', url); // डिबगिंग के लिए
     const response = await fetch(url);
     const data = await response.json();
+    console.log('API Response:', data); // डिबगिंग के लिए
 
     if (data.cod !== 200) {
-      result.innerHTML = '<p>City not found!</p>';
+      result.innerHTML = `<p>${data.message || 'City not found!'}</p>`;
       return;
     }
 
     updateWeather(data);
   } catch (error) {
-    result.innerHTML = '<p>Error fetching weather data.</p>';
+    console.error('Error fetching weather:', error); // डिबगिंग के लिए
+    result.innerHTML = '<p>Error fetching weather data. Check console for details.</p>';
   }
 }
 
@@ -32,24 +35,37 @@ async function fetchWeatherByLocation() {
   const result = document.getElementById('weather-result');
   if (!navigator.geolocation) {
     result.innerHTML = '<p>Geolocation is not supported by your browser.</p>';
+    console.error('Geolocation not supported'); // डिबगिंग के लिए
     return;
   }
 
+  result.innerHTML = '<p>Loading location...</p>'; // लोडिंग मैसेज
   navigator.geolocation.getCurrentPosition(
     async (position) => {
       const { latitude, longitude } = position.coords;
-      const apiKey = 'YOUR_API_KEY'; // OpenWeatherMap API key
-      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+      console.log('Location:', { latitude, longitude }); // डिबगिंग के लिए
 
       try {
+        const apiKey = 'YOUR_API_KEY'; // अपनी API key डालें
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+        console.log('Fetching weather for location:', url); // डिबगिंग के लिए
         const response = await fetch(url);
         const data = await response.json();
+        console.log('API Response:', data); // डिबगिंग के लिए
+
+        if (data.cod !== 200) {
+          result.innerHTML = `<p>${data.message || 'Error fetching weather!'}</p>`;
+          return;
+        }
+
         updateWeather(data);
       } catch (error) {
-        result.innerHTML = '<p>Error fetching weather data.</p>';
+        console.error('Error fetching weather:', error); // डिबगिंग के लिए
+        result.innerHTML = '<p>Error fetching weather data. Check console for details.</p>';
       }
     },
     (error) => {
+      console.error('Geolocation error:', error.message); // डिबगिंग के लिए
       result.innerHTML = '<p>Please allow location access or enter a city name.</p>';
     }
   );
